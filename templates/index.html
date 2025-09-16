@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⏰ CYBER TIME ZONE ⏰</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <header class="retro-header">
+        <h1 class="neon-title">⏰ CYBER TIME ZONE ⏰</h1>
+        <div class="subtitle">Welcome to the digital chronosphere</div>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link active">TIME</a>
+            <a href="/stopwatch" class="nav-link">STOPWATCH</a>
+            <a href="/guestbook" class="nav-link">GUESTBOOK</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="grid-container">
+            <div class="time-display-card">
+                <div class="card-header">
+                    <span class="card-title">⚡ CURRENT TIME ⚡</span>
+                    <div class="guest-counter">
+                        <span class="counter-label">Visitors:</span>
+                        <span class="counter-value" id="guestCount">{{.GuestCount}}</span>
+                    </div>
+                </div>
+
+                <div class="time-container">
+                    <div class="digital-clock">
+                        <div id="time" class="time-display">--:--:--</div>
+                        <div id="date" class="date-display">Loading...</div>
+                        <div id="location" class="location-display">📍 Detecting location...</div>
+                    </div>
+
+                    <div class="controls">
+                        <button id="toggle12" class="retro-btn">12/24</button>
+                        <button id="toggleSeconds" class="retro-btn">SECONDS</button>
+                        <button id="syncBtn" class="retro-btn pulse">SYNC</button>
+                        <button id="copyBtn" class="retro-btn">COPY</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timezone-card">
+                <div class="card-header">
+                    <span class="card-title">🌍 TIMEZONE SELECT 🌍</span>
+                </div>
+
+                <div class="timezone-controls">
+                    <select id="tzSelect" class="retro-select">
+                        <option value="local">🏠 Local Time</option>
+                        <option value="UTC">🌐 UTC</option>
+                        <option value="America/New_York">🗽 New York</option>
+                        <option value="America/Los_Angeles">🌴 Los Angeles</option>
+                        <option value="Europe/London">🏰 London</option>
+                        <option value="Europe/Paris">🗼 Paris</option>
+                        <option value="Asia/Tokyo">🗾 Tokyo</option>
+                        <option value="Asia/Shanghai">🏮 Shanghai</option>
+                        <option value="Australia/Sydney">🦘 Sydney</option>
+                    </select>
+
+                    <input id="customTz" type="text" class="retro-input" placeholder="Custom timezone (e.g. Europe/Berlin)">
+
+                    <button id="applyTz" class="retro-btn apply-btn">APPLY ZONE</button>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <span class="card-title">ℹ️ SYSTEM INFO ℹ️</span>
+                </div>
+
+                <div class="info-content">
+                    <div class="info-item">
+                        <span class="info-label">Server Status:</span>
+                        <span class="info-value online">ONLINE</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Protocol:</span>
+                        <span class="info-value">HTTP/1.1</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Sync Method:</span>
+                        <span class="info-value">Server-Client</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Framework:</span>
+                        <span class="info-value">Go + Vanilla JS</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="retro-footer">
+        <div class="footer-content">
+            <p>⚡ Powered by Go, HTML5 & pure CSS magic ⚡</p>
+            <p>Built with 💜 in the spirit of the 90s web</p>
+        </div>
+    </footer>
+
+    <script src="/static/app.js"></script>
+</body>
+</html>

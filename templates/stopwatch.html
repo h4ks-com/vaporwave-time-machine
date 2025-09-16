@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>⏱️ CYBER STOPWATCH ⏱️</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <header class="retro-header">
+        <h1 class="neon-title">⏱️ CYBER STOPWATCH ⏱️</h1>
+        <div class="subtitle">Precision timing in the digital realm</div>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link">TIME</a>
+            <a href="/stopwatch" class="nav-link active">STOPWATCH</a>
+            <a href="/guestbook" class="nav-link">GUESTBOOK</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="grid-container">
+            <div class="stopwatch-card">
+                <div class="card-header">
+                    <span class="card-title">⚡ STOPWATCH ⚡</span>
+                    <div class="guest-counter">
+                        <span class="counter-label">Visitors:</span>
+                        <span class="counter-value">{{.GuestCount}}</span>
+                    </div>
+                </div>
+
+                <div class="stopwatch-display">
+                    <div id="stopwatchTime" class="stopwatch-time">00:00:00.000</div>
+                    <div class="stopwatch-controls">
+                        <button id="startStopBtn" class="retro-btn start-btn">START</button>
+                        <button id="resetBtn" class="retro-btn">RESET</button>
+                        <button id="lapBtn" class="retro-btn" disabled>LAP</button>
+                    </div>
+                </div>
+
+                <div class="lap-times" id="lapTimes">
+                    <div class="lap-header">LAP TIMES</div>
+                    <div class="lap-list" id="lapList">
+                        <div class="no-laps">No lap times recorded</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="timer-card">
+                <div class="card-header">
+                    <span class="card-title">⏰ COUNTDOWN TIMER ⏰</span>
+                </div>
+
+                <div class="timer-display">
+                    <div id="timerTime" class="timer-time">00:00:00</div>
+
+                    <div class="timer-inputs">
+                        <div class="input-group">
+                            <label for="hours">Hours</label>
+                            <input type="number" id="hours" min="0" max="23" value="0" class="retro-input timer-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="minutes">Minutes</label>
+                            <input type="number" id="minutes" min="0" max="59" value="5" class="retro-input timer-input">
+                        </div>
+                        <div class="input-group">
+                            <label for="seconds">Seconds</label>
+                            <input type="number" id="seconds" min="0" max="59" value="0" class="retro-input timer-input">
+                        </div>
+                    </div>
+
+                    <div class="timer-controls">
+                        <button id="startTimerBtn" class="retro-btn start-btn">START TIMER</button>
+                        <button id="resetTimerBtn" class="retro-btn">RESET</button>
+                    </div>
+
+                    <div class="timer-presets">
+                        <button class="preset-btn" data-time="300">5 MIN</button>
+                        <button class="preset-btn" data-time="600">10 MIN</button>
+                        <button class="preset-btn" data-time="900">15 MIN</button>
+                        <button class="preset-btn" data-time="1500">25 MIN</button>
+                        <button class="preset-btn" data-time="3600">1 HOUR</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="info-card">
+                <div class="card-header">
+                    <span class="card-title">🎮 CONTROLS 🎮</span>
+                </div>
+
+                <div class="controls-info">
+                    <div class="control-item">
+                        <kbd>SPACE</kbd> - Start/Stop Stopwatch
+                    </div>
+                    <div class="control-item">
+                        <kbd>R</kbd> - Reset Stopwatch
+                    </div>
+                    <div class="control-item">
+                        <kbd>L</kbd> - Record Lap Time
+                    </div>
+                    <div class="control-item">
+                        <kbd>ENTER</kbd> - Start/Stop Timer
+                    </div>
+                    <div class="control-item">
+                        <kbd>ESC</kbd> - Reset Timer
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="retro-footer">
+        <div class="footer-content">
+            <p>⚡ High-precision timing for the digital age ⚡</p>
+            <p>Built with 💜 in the spirit of the 90s web</p>
+        </div>
+    </footer>
+
+    <script src="/static/stopwatch.js"></script>
+</body>
+</html>

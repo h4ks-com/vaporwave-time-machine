@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📖 CYBER GUESTBOOK 📖</title>
+    <link rel="stylesheet" href="/static/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="stars"></div>
+    <div class="twinkling"></div>
+
+    <header class="retro-header">
+        <h1 class="neon-title">📖 CYBER GUESTBOOK 📖</h1>
+        <div class="subtitle">Leave your mark in cyberspace</div>
+        <nav class="nav-bar">
+            <a href="/" class="nav-link">TIME</a>
+            <a href="/stopwatch" class="nav-link">STOPWATCH</a>
+            <a href="/guestbook" class="nav-link active">GUESTBOOK</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        <div class="grid-container">
+            <div class="guestbook-card">
+                <div class="card-header">
+                    <span class="card-title">💬 SIGN THE GUESTBOOK 💬</span>
+                    <div class="guest-counter">
+                        <span class="counter-label">Visitors:</span>
+                        <span class="counter-value">{{.GuestCount}}</span>
+                    </div>
+                </div>
+
+                <div class="guestbook-intro">
+                    <p class="intro-text">
+                        Welcome to the digital guestbook! Share your thoughts,
+                        experiences, or just say hello to fellow cyber travelers.
+                        This guestbook is powered by <strong>Giscus</strong> -
+                        a modern take on the classic 90s web experience.
+                    </p>
+
+                    <div class="retro-notice">
+                        <div class="notice-header">📝 How to Sign:</div>
+                        <ul class="notice-list">
+                            <li>✨ Sign in with your GitHub account</li>
+                            <li>🎨 Use GitHub-flavored Markdown</li>
+                            <li>💭 Share your thoughts about this retro time service</li>
+                            <li>🤝 Be kind to fellow visitors</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <div class="giscus-container">
+                    <script src="https://giscus.app/client.js"
+                            data-repo="jadedragon942/time"
+                            data-repo-id="R_kgDONKGUvA"
+                            data-category="General"
+                            data-category-id="DIC_kwDONKGUvM4Cj8dB"
+                            data-mapping="pathname"
+                            data-strict="0"
+                            data-reactions-enabled="1"
+                            data-emit-metadata="0"
+                            data-input-position="top"
+                            data-theme="dark_tritanopia"
+                            data-lang="en"
+                            data-loading="lazy"
+                            crossorigin="anonymous"
+                            async>
+                    </script>
+                </div>
+            </div>
+
+            <div class="stats-card">
+                <div class="card-header">
+                    <span class="card-title">📊 SITE STATS 📊</span>
+                </div>
+
+                <div class="stats-content">
+                    <div class="stat-item">
+                        <span class="stat-label">Total Visitors:</span>
+                        <span class="stat-value" id="totalVisitors">{{.GuestCount}}</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Site Online Since:</span>
+                        <span class="stat-value">Today</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Server Location:</span>
+                        <span class="stat-value">Cloud</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Technology Stack:</span>
+                        <span class="stat-value">Go + HTML + CSS + JS</span>
+                    </div>
+                </div>
+
+                <div class="retro-badge">
+                    <div class="badge-text">POWERED BY</div>
+                    <div class="badge-logo">⚡ CYBER TECH ⚡</div>
+                </div>
+            </div>
+
+            <div class="retro-links-card">
+                <div class="card-header">
+                    <span class="card-title">🔗 RETRO LINKS 🔗</span>
+                </div>
+
+                <div class="links-content">
+                    <div class="link-category">
+                        <div class="category-title">🕹️ Classic Web</div>
+                        <div class="link-list">
+                            <a href="https://archive.org" class="retro-link" target="_blank">Internet Archive</a>
+                            <a href="https://oldweb.today" class="retro-link" target="_blank">Old Web Today</a>
+                            <a href="https://theoldnet.com" class="retro-link" target="_blank">The Old Net</a>
+                        </div>
+                    </div>
+
+                    <div class="link-category">
+                        <div class="category-title">🎨 Retro Design</div>
+                        <div class="link-list">
+                            <a href="https://windows93.net" class="retro-link" target="_blank">Windows 93</a>
+                            <a href="https://98.js.org" class="retro-link" target="_blank">Windows 98 CSS</a>
+                            <a href="https://jdan.github.io/98.css" class="retro-link" target="_blank">98.css</a>
+                        </div>
+                    </div>
+
+                    <div class="link-category">
+                        <div class="category-title">💻 Tech Tools</div>
+                        <div class="link-list">
+                            <a href="https://golang.org" class="retro-link" target="_blank">Go Language</a>
+                            <a href="https://giscus.app" class="retro-link" target="_blank">Giscus Comments</a>
+                            <a href="https://github.com" class="retro-link" target="_blank">GitHub</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="retro-footer">
+        <div class="footer-content">
+            <p>⚡ Connecting minds across the digital void ⚡</p>
+            <p>Built with 💜 in the spirit of the 90s web</p>
+        </div>
+    </footer>
+
+    <script>
+        // Auto-refresh visitor count every 30 seconds
+        setInterval(async () => {
+            try {
+                const response = await fetch('/api/counter');
+                const data = await response.json();
+                document.getElementById('totalVisitors').textContent = data.count;
+            } catch (error) {
+                console.error('Failed to update visitor count:', error);
+            }
+        }, 30000);
+    </script>
+</body>
+</html>
