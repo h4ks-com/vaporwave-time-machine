@@ -15,7 +15,7 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/time", timeHandler)
 
-	addr := ":8080"
+	addr := ":8000"
 	log.Printf("Starting server at %s — open http://localhost%s\n", addr, addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
 		log.Fatal(err)
