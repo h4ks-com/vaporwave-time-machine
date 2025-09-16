@@ -6,6 +6,7 @@ import (
 	"log"
 	"net"
 	"net/http"
+	"os"
 	"sync"
 	"time"
 
@@ -83,9 +84,17 @@ func stopwatchHandler(w http.ResponseWriter, r *http.Request) {
 func guestbookHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	data := struct {
-		GuestCount int64
+		GuestCount       int64
+		GiscusRepo       string
+		GiscusRepoId     string
+		GiscusCategory   string
+		GiscusCategoryId string
 	}{
-		GuestCount: getGuestCounter(),
+		GuestCount:       getGuestCounter(),
+		GiscusRepo:       os.Getenv("GISCUS_REPO"),
+		GiscusRepoId:     os.Getenv("GISCUS_REPO_ID"),
+		GiscusCategory:   os.Getenv("GISCUS_CATEGORY"),
+		GiscusCategoryId: os.Getenv("GISCUS_CATEGORY_ID"),
 	}
 	if err := templates.ExecuteTemplate(w, "guestbook.html", data); err != nil {
 		log.Printf("Template execute error: %v", err)

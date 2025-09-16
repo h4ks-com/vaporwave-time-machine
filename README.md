@@ -128,10 +128,37 @@ Retro beep sounds for stopwatch and timer events using the Web Audio API. Sounds
 ### Giscus Guestbook Setup
 To set up your own guestbook:
 
-1. Enable GitHub Discussions on your repository
-2. Visit [giscus.app](https://giscus.app)
-3. Configure your repository settings
-4. Update the Giscus configuration in `templates/guestbook.html`
+1. **Enable GitHub Discussions** on your repository:
+   - Go to your GitHub repository
+   - Navigate to Settings → General
+   - Scroll down to "Features" and check "Discussions"
+
+2. **Configure Giscus**:
+   - Visit [giscus.app](https://giscus.app)
+   - Enter your repository name (e.g., `username/repository`)
+   - Choose "Discussion title contains page `pathname`"
+   - Select a discussion category (e.g., "General")
+   - Copy the generated configuration values
+
+3. **Set environment variables**:
+   ```bash
+   export GISCUS_REPO="username/repository"
+   export GISCUS_REPO_ID="your_repo_id"
+   export GISCUS_CATEGORY="General"
+   export GISCUS_CATEGORY_ID="your_category_id"
+   ```
+
+   Or create a `.env` file in the project root:
+   ```env
+   GISCUS_REPO=username/repository
+   GISCUS_REPO_ID=your_repo_id
+   GISCUS_CATEGORY=General
+   GISCUS_CATEGORY_ID=your_category_id
+   ```
+
+4. **Restart the server** to apply the new configuration
+
+**Note:** If environment variables are not set, the guestbook will display a configuration notice instead of the comment system.
 
 ### Customization
 - Modify CSS variables in `static/style.css` to change the color scheme

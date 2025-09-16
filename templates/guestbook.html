@@ -52,11 +52,12 @@
                 </div>
 
                 <div class="giscus-container">
+                    {{if .GiscusRepo}}
                     <script src="https://giscus.app/client.js"
-                            data-repo="jadedragon942/time"
-                            data-repo-id="R_kgDONKGUvA"
-                            data-category="General"
-                            data-category-id="DIC_kwDONKGUvM4Cj8dB"
+                            data-repo="{{.GiscusRepo}}"
+                            data-repo-id="{{.GiscusRepoId}}"
+                            data-category="{{.GiscusCategory}}"
+                            data-category-id="{{.GiscusCategoryId}}"
                             data-mapping="pathname"
                             data-strict="0"
                             data-reactions-enabled="1"
@@ -68,6 +69,18 @@
                             crossorigin="anonymous"
                             async>
                     </script>
+                    {{else}}
+                    <div class="giscus-notice">
+                        <p>💬 Guestbook is not configured. Please set the required environment variables:</p>
+                        <ul>
+                            <li>GISCUS_REPO</li>
+                            <li>GISCUS_REPO_ID</li>
+                            <li>GISCUS_CATEGORY</li>
+                            <li>GISCUS_CATEGORY_ID</li>
+                        </ul>
+                        <p>See the README for setup instructions.</p>
+                    </div>
+                    {{end}}
                 </div>
             </div>
 
