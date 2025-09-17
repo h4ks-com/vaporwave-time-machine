@@ -91,7 +91,6 @@ func main() {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
-    incrementGuestCounter()
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	data := struct {
 		GuestCount int64
