@@ -202,4 +202,3 @@ This project is open source and available under the MIT License.
 
 **Made with 💜 in the spirit of the 90s web**
 
-*Welcome to the digital chronosphere! 🌈⏰*

@@ -365,8 +365,6 @@
     // Add some retro console styling
     console.log('%c🌈 90s VAPORWAVE TIME SERVICE 🌈',
         'color: #ff00ff; font-size: 20px; font-weight: bold; text-shadow: 0 0 10px #ff00ff;');
-    console.log('%cWelcome to the digital chronosphere!',
-        'color: #00ffff; font-size: 14px; text-shadow: 0 0 5px #00ffff;');
 
     // Initialize the application
     init().catch(error => {

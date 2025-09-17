@@ -138,9 +138,7 @@ func timeHandler(w http.ResponseWriter, r *http.Request) {
 func counterHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	if r.Method == "POST" {
-		incrementGuestCounter()
-	}
+	incrementGuestCounter()
 
 	count := getGuestCounter()
 	response := struct {
