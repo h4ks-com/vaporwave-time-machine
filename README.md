@@ -10,7 +10,6 @@ A retro-futuristic time service with a rad 90s vaporwave aesthetic! This web app
 - **12/24 hour format toggle**
 - **Show/hide seconds** option
 - **Copy time to clipboard** functionality
-- **Automatic geo-location** detection (when GeoIP database is available)
 
 ### ⏱️ Stopwatch & Timer
 - **High-precision stopwatch** with millisecond accuracy
@@ -60,16 +59,6 @@ A retro-futuristic time service with a rad 90s vaporwave aesthetic! This web app
 4. **Open your browser:**
    Navigate to `http://localhost:8000`
 
-### Optional: GeoIP Database
-
-For location detection, download the free MaxMind GeoLite2 database:
-
-1. Sign up at [MaxMind](https://www.maxmind.com/en/geolite2/signup)
-2. Download the GeoLite2-City.mmdb file
-3. Place it in the project root directory
-
-Without this database, the app will show "Unknown" for location but all other features work perfectly.
-
 ## 🎮 Controls & Shortcuts
 
 ### Main Time Page
@@ -92,7 +81,6 @@ Without this database, the app will show "Unknown" for location but all other fe
 The service exposes several JSON APIs:
 
 - `GET /time` - Current server time in UTC
-- `GET /api/geoip` - Client's geographic location
 - `GET /api/counter` - Current visitor count
 - `POST /api/counter` - Increment visitor count
 
@@ -102,7 +90,6 @@ The service exposes several JSON APIs:
 - **Frontend:** Vanilla HTML, CSS, and JavaScript
 - **Fonts:** Google Fonts (Orbitron)
 - **Comments:** Giscus integration
-- **GeoIP:** MaxMind GeoLite2 database
 - **Styling:** Pure CSS with custom vaporwave theme
 
 ## 🌟 Features Breakdown
@@ -207,7 +194,6 @@ This project is open source and available under the MIT License.
 ## 🙏 Acknowledgments
 
 - Inspired by 90s web design and vaporwave aesthetics
-- MaxMind for GeoLite2 database
 - Giscus for modern commenting system
 - Google Fonts for the Orbitron typeface
 - The retro computing and vaporwave communities
