@@ -3,7 +3,6 @@
     // DOM Elements
     const timeEl = document.getElementById('time');
     const dateEl = document.getElementById('date');
-    const locationEl = document.getElementById('location');
     const tzSelect = document.getElementById('tzSelect');
     const customTz = document.getElementById('customTz');
     const applyTz = document.getElementById('applyTz');
@@ -25,7 +24,6 @@
     async function init() {
         await Promise.all([
             syncServerTime(),
-            fetchGeoLocation(),
             updateGuestCounter()
         ]);
         startTimeDisplay();
@@ -58,34 +56,6 @@
             console.error('❌ Time sync failed:', error);
             updateSyncButton('Sync Failed', false);
             setTimeout(() => updateSyncButton('SYNC', false), 3000);
-        }
-    }
-
-    // Fetch user's geo location
-    async function fetchGeoLocation() {
-        try {
-            const resp = await fetch('/api/geoip');
-            const location = await resp.json();
-
-            userLocation = location;
-
-            if (location.country && location.city) {
-                locationEl.textContent = `📍 ${location.city}, ${location.country}`;
-
-                // Auto-set timezone if available
-                if (location.timezone && location.timezone !== 'UTC') {
-                    tz = location.timezone;
-                    updateTimezoneDisplay();
-                }
-            } else {
-                locationEl.textContent = '📍 Location unknown';
-            }
-
-            console.log('🌍 Location detected:', location);
-
-        } catch (error) {
-            console.error('❌ GeoIP lookup failed:', error);
-            locationEl.textContent = '📍 Location detection failed';
         }
     }
 

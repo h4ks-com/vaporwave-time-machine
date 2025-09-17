@@ -5,39 +5,23 @@ import (
 	"encoding/json"
 	"html/template"
 	"log"
-	"net"
 	"net/http"
 	"os"
 	"sync"
 	"time"
 
-	"github.com/oschwald/geoip2-golang"
 	_ "modernc.org/sqlite"
 )
 
 var (
-	templates = template.Must(template.ParseGlob("templates/*.html"))
+	templates    = template.Must(template.ParseGlob("templates/*.html"))
 	counterMutex sync.RWMutex
-	geoipDB *geoip2.Reader
-	sqliteDB *sql.DB
+	sqliteDB     *sql.DB
 )
 
-type GeoLocation struct {
-	Country  string  `json:"country"`
-	City     string  `json:"city"`
-	Timezone string  `json:"timezone"`
-	Lat      float64 `json:"lat"`
-	Lon      float64 `json:"lon"`
-}
-
 func init() {
-	var err error
-	geoipDB, err = geoip2.Open("GeoLite2-City.mmdb")
-	if err != nil {
-		log.Printf("Warning: Could not load GeoIP database: %v", err)
-		geoipDB = nil
-	}
 
+	var err error
 	sqliteDB, err = sql.Open("sqlite", "visitors.db")
 	if err != nil {
 		log.Fatalf("Failed to open SQLite database: %v", err)
@@ -78,11 +62,8 @@ func main() {
 	http.HandleFunc("/time", timeHandler)
 	http.HandleFunc("/stopwatch", stopwatchHandler)
 	http.HandleFunc("/guestbook", guestbookHandler)
-	http.HandleFunc("/api/geoip", geoipHandler)
 	http.HandleFunc("/api/counter", counterHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
-
-	incrementGuestCounter()
 
 	addr := ":8000"
 	log.Printf("🌈 90s Vaporwave Time Service starting at %s — open http://localhost%s 🌈\n", addr, addr)
@@ -154,51 +135,6 @@ func timeHandler(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(js)
 }
 
-func geoipHandler(w http.ResponseWriter, r *http.Request) {
-	w.Header().Set("Content-Type", "application/json")
-
-	if geoipDB == nil {
-		json.NewEncoder(w).Encode(GeoLocation{
-			Country:  "Unknown",
-			City:     "Unknown",
-			Timezone: "UTC",
-			Lat:      0,
-			Lon:      0,
-		})
-		return
-	}
-
-	ip := getClientIP(r)
-	parsedIP := net.ParseIP(ip)
-	if parsedIP == nil {
-		http.Error(w, "Invalid IP", 400)
-		return
-	}
-
-	record, err := geoipDB.City(parsedIP)
-	if err != nil {
-		log.Printf("GeoIP lookup error: %v", err)
-		json.NewEncoder(w).Encode(GeoLocation{
-			Country:  "Unknown",
-			City:     "Unknown",
-			Timezone: "UTC",
-			Lat:      0,
-			Lon:      0,
-		})
-		return
-	}
-
-	location := GeoLocation{
-		Country:  record.Country.Names["en"],
-		City:     record.City.Names["en"],
-		Timezone: record.Location.TimeZone,
-		Lat:      record.Location.Latitude,
-		Lon:      record.Location.Longitude,
-	}
-
-	json.NewEncoder(w).Encode(location)
-}
-
 func counterHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
@@ -213,22 +149,6 @@ func counterHandler(w http.ResponseWriter, r *http.Request) {
 		Count: count,
 	}
 	json.NewEncoder(w).Encode(response)
-}
-
-func getClientIP(r *http.Request) string {
-	xff := r.Header.Get("X-Forwarded-For")
-	if xff != "" {
-		return xff
-	}
-	xri := r.Header.Get("X-Real-IP")
-	if xri != "" {
-		return xri
-	}
-	host, _, err := net.SplitHostPort(r.RemoteAddr)
-	if err != nil {
-		return r.RemoteAddr
-	}
-	return host
 }
 
 func incrementGuestCounter() {
