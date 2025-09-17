@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"encoding/json"
 	"html/template"
 	"log"
@@ -10,13 +11,14 @@ import (
 	"time"
 
 	"github.com/oschwald/geoip2-golang"
+	_ "modernc.org/sqlite"
 )
 
 var (
 	templates = template.Must(template.ParseGlob("templates/*.html"))
-	guestCounter int64
 	counterMutex sync.RWMutex
-	db *geoip2.Reader
+	geoipDB *geoip2.Reader
+	sqliteDB *sql.DB
 )
 
 type GeoLocation struct {
@@ -29,11 +31,45 @@ type GeoLocation struct {
 
 func init() {
 	var err error
-	db, err = geoip2.Open("GeoLite2-City.mmdb")
+	geoipDB, err = geoip2.Open("GeoLite2-City.mmdb")
 	if err != nil {
 		log.Printf("Warning: Could not load GeoIP database: %v", err)
-		db = nil
+		geoipDB = nil
 	}
+
+	sqliteDB, err = sql.Open("sqlite", "visitors.db")
+	if err != nil {
+		log.Fatalf("Failed to open SQLite database: %v", err)
+	}
+
+	if err := initDB(); err != nil {
+		log.Fatalf("Failed to initialize database: %v", err)
+	}
+}
+
+func initDB() error {
+	query := `
+	CREATE TABLE IF NOT EXISTS visitor_stats (
+		id INTEGER PRIMARY KEY AUTOINCREMENT,
+		guest_count INTEGER NOT NULL DEFAULT 0
+	);`
+
+	if _, err := sqliteDB.Exec(query); err != nil {
+		return err
+	}
+
+	var count int
+	err := sqliteDB.QueryRow("SELECT COUNT(*) FROM visitor_stats").Scan(&count)
+	if err != nil {
+		return err
+	}
+
+	if count == 0 {
+		_, err = sqliteDB.Exec("INSERT INTO visitor_stats (guest_count) VALUES (0)")
+		return err
+	}
+
+	return nil
 }
 
 func main() {
@@ -55,6 +91,7 @@ func main() {
 }
 
 func indexHandler(w http.ResponseWriter, r *http.Request) {
+    incrementGuestCounter()
 	w.Header().Set("Content-Type", "text/html; charset=utf-8")
 	data := struct {
 		GuestCount int64
@@ -112,7 +149,7 @@ func timeHandler(w http.ResponseWriter, r *http.Request) {
 func geoipHandler(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 
-	if db == nil {
+	if geoipDB == nil {
 		json.NewEncoder(w).Encode(GeoLocation{
 			Country:  "Unknown",
 			City:     "Unknown",
@@ -130,7 +167,7 @@ func geoipHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	record, err := db.City(parsedIP)
+	record, err := geoipDB.City(parsedIP)
 	if err != nil {
 		log.Printf("GeoIP lookup error: %v", err)
 		json.NewEncoder(w).Encode(GeoLocation{
@@ -189,11 +226,22 @@ func getClientIP(r *http.Request) string {
 func incrementGuestCounter() {
 	counterMutex.Lock()
 	defer counterMutex.Unlock()
-	guestCounter++
+
+	_, err := sqliteDB.Exec("UPDATE visitor_stats SET guest_count = guest_count + 1 WHERE id = 1")
+	if err != nil {
+		log.Printf("Error incrementing guest counter: %v", err)
+	}
 }
 
 func getGuestCounter() int64 {
 	counterMutex.RLock()
 	defer counterMutex.RUnlock()
-	return guestCounter
+
+	var count int64
+	err := sqliteDB.QueryRow("SELECT guest_count FROM visitor_stats WHERE id = 1").Scan(&count)
+	if err != nil {
+		log.Printf("Error getting guest counter: %v", err)
+		return 0
+	}
+	return count
 }
