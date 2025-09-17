@@ -81,8 +81,6 @@ func main() {
 	http.HandleFunc("/api/counter", counterHandler)
 	http.Handle("/static/", http.StripPrefix("/static/", http.FileServer(http.Dir("static"))))
 
-	incrementGuestCounter()
-
 	addr := ":8000"
 	log.Printf("🌈 90s Vaporwave Time Service starting at %s — open http://localhost%s 🌈\n", addr, addr)
 	if err := http.ListenAndServe(addr, nil); err != nil {
